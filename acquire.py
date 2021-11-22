@@ -47,7 +47,7 @@ class Acquire:
             print("Connected successfully")
 
             # Write that dataframe to disk for later. Called "caching" the data for later.
-            df.to_csv(filename)
+            df.to_csv(filename, index=False)
             print(f"Table saved to {filename}")
 
         finally:

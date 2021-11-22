@@ -70,7 +70,7 @@ class Prepare:
         Returns:
             [type]: [description]
         """
-        cols_drop = ['Unnamed: 0', 'customer_id', 'senior_citizen', 'partner', 'phone_service', 'online_security', 'online_backup', 'device_protection', 'tech_support', 'streaming_tv', 'streaming_movies', 'paperless_billing', 'contract_type', 'internet_service_type', 'payment_type']
+        cols_drop = ['customer_id', 'senior_citizen', 'partner', 'phone_service', 'online_security', 'online_backup', 'device_protection', 'tech_support', 'streaming_tv', 'streaming_movies', 'paperless_billing', 'contract_type', 'internet_service_type', 'payment_type']
         df.drop(columns=cols_drop, axis=1, inplace=True)
 
         cols_strat = "churn"
