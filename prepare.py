@@ -57,7 +57,7 @@ class Prepare:
         Returns:
             [type]: [description]
         """
-        cols_drop = ['customer_id', 'contract_type', 'internet_service_type', 'payment_type']
+        cols_drop = ['customer_id', 'contract_type_id', 'internet_service_type_id', 'payment_type_id']
         df.drop(columns=cols_drop, axis=1, inplace=True)
 
         cols_replace = {"gender": {"Male": 1, "Female": 0}, "partner": {"Yes": 1, "No": 0}, "dependents": {"Yes": 1, "No": 0}, "phone_service": {"Yes": 1, "No": 0}, "paperless_billing": {"Yes": 1, "No": 0},  "total_charges": {" ": "0"}}
@@ -65,6 +65,12 @@ class Prepare:
 
         cols_dummy = ["multiple_lines", "online_security", "online_backup", "device_protection", "tech_support", "streaming_tv", "streaming_movies"]
         df = pd.get_dummies(df, columns=cols_dummy, drop_first= True)
+
+        cols_dum_drop = ["online_security_No internet service", "online_backup_No internet service", "device_protection_No internet service", "tech_support_No internet service", "streaming_tv_No internet service", "streaming_movies_No internet service"]
+        df.drop(columns=cols_dum_drop, axis=1, inplace=True)
+
+        cols_rename = {"multiple_lines_No phone service": "no_phone_service", "multiple_lines_Yes": "multiple_lines", "online_security_Yes": "online_security", "online_backup_Yes": "online_backup", "device_protection_Yes": "device_protection", "tech_support_Yes": "tech_support", "streaming_tv_Yes": "streaming_tv", "streaming_movies_Yes": "steaming_movies" }
+        df.rename(columns=cols_rename, inplace=True)
 
         cols_strat = "churn"
         train, val, test = Prepare.__impute_values(df, cols_strat)
