@@ -60,7 +60,7 @@ class Prepare:
         cols_drop = ['customer_id', 'contract_type_id', 'internet_service_type_id', 'payment_type_id']
         df.drop(columns=cols_drop, axis=1, inplace=True)
 
-        cols_replace = {"gender": {"Male": 1, "Female": 0}, "partner": {"Yes": 1, "No": 0}, "dependents": {"Yes": 1, "No": 0}, "phone_service": {"Yes": 1, "No": 0}, "paperless_billing": {"Yes": 1, "No": 0},  "total_charges": {" ": "0"}}
+        cols_replace = {"gender": {"Male": 1, "Female": 0}, "partner": {"Yes": 1, "No": 0}, "dependents": {"Yes": 1, "No": 0}, "phone_service": {"Yes": 1, "No": 0}, "paperless_billing": {"Yes": 1, "No": 0},  "total_charges": {" ": "0"}, "churn": {"Yes": 1, "No": 0}}
         df.replace(to_replace=cols_replace, inplace=True)
 
         cols_dummy = ["multiple_lines", "online_security", "online_backup", "device_protection", "tech_support", "streaming_tv", "streaming_movies"]
