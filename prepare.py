@@ -48,7 +48,7 @@ class Prepare:
 
         return train, val, test
 
-    def prep_telco(self, df):
+    def prep_telco(self, df, modeling=False):
         """prep_telco [summary]
 
         Args:
@@ -63,6 +63,10 @@ class Prepare:
         cols_replace = {"gender": {"Male": 1, "Female": 0}, "partner": {"Yes": 1, "No": 0}, "dependents": {"Yes": 1, "No": 0}, "phone_service": {"Yes": 1, "No": 0}, "paperless_billing": {"Yes": 1, "No": 0},  "total_charges": {" ": "0"}, "churn": {"Yes": 1, "No": 0}}
         df.replace(to_replace=cols_replace, inplace=True)
 
+        if modeling:
+            cols_extra_replace = {"contract_type": {"Month-to-month": 0, "One year": 1, "Two year": 2}, "internet_service_type": {"None": 0, "DSL": 1, "Fiber optic": 2}, "payment_type": {"Electronic check": 0, "Mailed check": 1, "Bank transfer (automatic)": 2, "Credit card (automatic)": 3}}
+            df.replace(to_replace=cols_extra_replace, inplace=True)
+
         cols_dummy = ["multiple_lines", "online_security", "online_backup", "device_protection", "tech_support", "streaming_tv", "streaming_movies"]
         df = pd.get_dummies(df, columns=cols_dummy, drop_first= True)
 
@@ -75,10 +79,18 @@ class Prepare:
         cols_strat = "churn"
         train, val, test = Prepare.__impute_values(df, cols_strat)
 
-        col_types = {"tenure": int, "monthly_charges": float, "total_charges": float}
-        train, val, test = train.astype(dtype=col_types),\
-                            val.astype(dtype=col_types),\
-                            test.astype(dtype=col_types)
+        if modeling:
+            train, val, test = train.astype(dtype=float),\
+                            val.astype(dtype=float),\
+                            test.astype(dtype=float)
+
+        else:
+            col_types = {"tenure": int, "monthly_charges": float, "total_charges": float}
+            train, val, test = train.astype(dtype=col_types),\
+                                val.astype(dtype=col_types),\
+                                test.astype(dtype=col_types)
+
+
 
         return train, val, test
 

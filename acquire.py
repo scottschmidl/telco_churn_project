@@ -58,7 +58,7 @@ def main():
     a = Acquire()
 
     telco_churn = a.get_telco_data()
-    print(telco_churn.head())
+    print(telco_churn.count())
 
 if __name__ == "__main__":
     main()
