@@ -60,15 +60,19 @@ class Prepare:
         cols_drop = ['customer_id', 'contract_type', 'internet_service_type', 'payment_type']
         df.drop(columns=cols_drop, axis=1, inplace=True)
 
-        cols_replace = {"gender": {"Male": 1, "Female": 0}, "partner": {"Yes": 1, "No": 0}, "dependents": {"Yes": 1, "No": 0}, "phone_service": {"Yes": 1, "No": 0}, "paperless_billing": {"Yes": 1, "No": 0}}
+        cols_replace = {"gender": {"Male": 1, "Female": 0}, "partner": {"Yes": 1, "No": 0}, "dependents": {"Yes": 1, "No": 0}, "phone_service": {"Yes": 1, "No": 0}, "paperless_billing": {"Yes": 1, "No": 0},  "total_charges": {" ": "0"}}
         df.replace(to_replace=cols_replace, inplace=True)
 
         cols_dummy = ["multiple_lines", "online_security", "online_backup", "device_protection", "tech_support", "streaming_tv", "streaming_movies"]
         df = pd.get_dummies(df, columns=cols_dummy, drop_first= True)
 
-
         cols_strat = "churn"
         train, val, test = Prepare.__impute_values(df, cols_strat)
+
+        col_types = {"tenure": int, "monthly_charges": float, "total_charges": float}
+        train, val, test = train.astype(dtype=col_types),\
+                            val.astype(dtype=col_types),\
+                            test.astype(dtype=col_types)
 
         return train, val, test
 
@@ -78,10 +82,10 @@ def main():
     p = Prepare()
 
     telco_raw = a.get_telco_data()
-    telco_train, telco_val, telco_test = p.prep_telco(telco_raw)
-    print(telco_train.shape)
-    print(telco_val.shape)
-    print(telco_test.shape)
+    train, val, test = p.prep_telco(telco_raw)
+    print(train.shape)
+    print(val.shape)
+    print(test.shape)
 
 if __name__ == "__main__":
     main()
