@@ -8,16 +8,15 @@ class Prepare:
 
     @classmethod
     def __split(cls, df, cols_strat):
-        """__split [summary]
+        """__split: class method (private), split the dataframe into three subsets
 
         Args:
-            df ([type]): [description]
-            cols_strat ([type]): [description]
+            df (pandas dataframe): dataframe that will be split
+            cols_strat (string): columns to stratify
 
         Returns:
-            [type]: [description]
+            tuple: three subset dataframes split for visualtion and modeling
         """
-        # FOR TRANSPARENCY I'M USING CODE FROM CLASS
         train, test = train_test_split(df, test_size=.15, random_state=123, stratify=df[cols_strat])
         train, val = train_test_split(train, test_size=.15, random_state=123, stratify=train[cols_strat])
 
@@ -25,17 +24,16 @@ class Prepare:
 
     @classmethod
     def __impute_values(cls, df, cols_strat):
-        """__impute_values [summary]
+        """__impute_values: class method (private), impute most frequest values into appropriate columns
 
         Args:
-            df ([type]): [description]
-            cols_strat ([type]): [description]
+            df (pandas dataframe): values will be imputed
+            cols_strat (string): columns to stratify in split method
 
         Returns:
-            [type]: [description]
+            tuple: three subset dataframes imputed with most frequest values
         """
         cols = df.columns
-        # FOR TRANSPARENCY I'M USING CODE FROM CLASS
         train, val, test = Prepare.__split(df, cols_strat)
 
         imputer = SimpleImputer(missing_values=np.nan, strategy='most_frequent')
@@ -49,13 +47,13 @@ class Prepare:
         return train, val, test
 
     def prep_telco(self, df, modeling=False):
-        """prep_telco [summary]
+        """prep_telco: prepare the data to use for vizualization and modeling
 
         Args:
-            df ([type]): [description]
+            df (pandas dataframe): cleaning will be performed on this dataframe
 
         Returns:
-            [type]: [description]
+            tuple: three subset dataframes to use for vizualization and modeling
         """
         cols_drop = ['customer_id', 'contract_type_id', 'internet_service_type_id', 'payment_type_id']
         df.drop(columns=cols_drop, axis=1, inplace=True)

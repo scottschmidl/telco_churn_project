@@ -5,24 +5,24 @@ class Acquire:
 
     @classmethod
     def __get_connection(cls, db, user=user, password=password, host=host):
-        """__get_connection [summary]
+        """__get_connection: connects to mysql database
 
         Args:
-            db ([type]): [description]
-            user ([type], optional): [description]. Defaults to user.
-            password ([type], optional): [description]. Defaults to password.
-            host ([type], optional): [description]. Defaults to host.
+            db (string): db to connect
+            user (string, optional): name of user with which to login]. Defaults to user.
+            password (string, optional): password of user with which to login. Defaults to password.
+            host (string, optional): host name to connect. Defaults to host.
 
         Returns:
-            [type]: [description]
+            string: used to connect to mysql
         """
         return f'mysql+pymysql://{user}:{password}@{host}/{db}'
 
     def get_telco_data(self):
-        """get_telco_data [summary]
+        """get_telco_data: get data from csv or mysql
 
         Returns:
-            [type]: [description]
+            pandas dataframe: used for analysis and modeling
         """
         filename = "telco.csv"
         db = "telco_churn"
