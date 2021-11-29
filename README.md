@@ -114,4 +114,4 @@ It has come to the attention of staff here at Telco that members are churning at
 You will need an env.py file that contains the hostname, username and password of the mySQL database that contains the telco churn table. The env.py file will need to be in the repository and filename verified or placed in the git ignore. Clone this repo and ensure acquire.py and prepare.py are on your local machine. Additionally, verify env.py is in the git ignore to ensure security of your login information. The technologies used in this project are Python 3.8.11, Pandas 1.3.4, MatPlotLib 3.4.3, Seaborn 0.11.2, Scipy 1.7.1, and SkLearn 1.0.1. The notebook named report.ipynb should run.
 
 ### Plan
-
+The plan moving forward is to acqure the data either from a CSV or the MySQL database and performed some preparation steps. Then, I  will do some visualizations and compliment them with some statistical tests. Finally, I will do some machine learning using Random Forest, K Nearest Neighbors, and Logistic Regression and pick the best model to test and move into production. I will then discuss some recommendations and next steps I would like to do with this project.
