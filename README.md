@@ -7,7 +7,7 @@ This repo contains my telco churn classification project with Codeup.
 The goal of this project is to understand the attributes that lead to customer churn and identify and recommend way to help reduce churn.
 
 ### Description
-It has come to the attention of staff here at Telco that members are churning at a rapid rate. We will identify attributes that do  or do not lead to churn, develop a model to best predict if a customer will churn based off of their information, and make recommendations to help with future memeber retention.
+Members are churning at a rapid rate. I will identify attributes that do or do not lead to churn, develop a model to best predict if a customer will churn based off of their information, and make recommendations to help with future memeber retention.
 
 ### Initial Questions
 1) Is it the case that those with higher monthly charges churn more often than those with lower monthly charges?
