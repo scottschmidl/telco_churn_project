@@ -17,6 +17,8 @@ class Prepare:
         Returns:
             tuple: three subset dataframes split for visualtion and modeling
         """
+
+        # create train, validate, and test sets
         train, test = train_test_split(df, test_size=.15, random_state=123, stratify=df[cols_strat])
         train, val = train_test_split(train, test_size=.15, random_state=123, stratify=train[cols_strat])
 
@@ -33,14 +35,18 @@ class Prepare:
         Returns:
             tuple: three subset dataframes imputed with most frequest values
         """
+
+        # get column list
         cols = df.columns
         train, val, test = Prepare.__split(df, cols_strat)
 
+        # impute mode into missing values
         imputer = SimpleImputer(missing_values=np.nan, strategy='most_frequent')
         train = imputer.fit_transform(train)
         val = imputer.transform(val)
         test = imputer.transform(test)
 
+        # identify train, validate, and test
         train, val, test = pd.DataFrame(train, columns=cols), pd.DataFrame(val, columns=cols),\
                             pd.DataFrame(test, columns=cols)
 
@@ -55,40 +61,49 @@ class Prepare:
         Returns:
             tuple: three subset dataframes to use for vizualization and modeling
         """
+
+        # drop columsns that aren't needed
         cols_drop = ['customer_id', 'contract_type_id', 'internet_service_type_id', 'payment_type_id']
         df.drop(columns=cols_drop, axis=1, inplace=True)
 
+        # replace column values that are strings with integers
         cols_replace = {"gender": {"Male": 1, "Female": 0}, "partner": {"Yes": 1, "No": 0}, "dependents": {"Yes": 1, "No": 0}, "phone_service": {"Yes": 1, "No": 0}, "paperless_billing": {"Yes": 1, "No": 0},  "total_charges": {" ": "0"}, "churn": {"Yes": 1, "No": 0}}
         df.replace(to_replace=cols_replace, inplace=True)
 
+        # if doing ML, further replace string column values
         if modeling:
             cols_extra_replace = {"contract_type": {"Month-to-month": 0, "One year": 1, "Two year": 2}, "internet_service_type": {"None": 0, "DSL": 1, "Fiber optic": 2}, "payment_type": {"Electronic check": 0, "Mailed check": 1, "Bank transfer (automatic)": 2, "Credit card (automatic)": 3}}
             df.replace(to_replace=cols_extra_replace, inplace=True)
 
+
+        # create dummy columns
         cols_dummy = ["multiple_lines", "online_security", "online_backup", "device_protection", "tech_support", "streaming_tv", "streaming_movies"]
         df = pd.get_dummies(df, columns=cols_dummy, drop_first= True)
 
+        # drop certain dummy columns
         cols_dum_drop = ["online_security_No internet service", "online_backup_No internet service", "device_protection_No internet service", "tech_support_No internet service", "streaming_tv_No internet service", "streaming_movies_No internet service"]
         df.drop(columns=cols_dum_drop, axis=1, inplace=True)
 
+        # rename columns that were dummied
         cols_rename = {"multiple_lines_No phone service": "no_phone_service", "multiple_lines_Yes": "multiple_lines", "online_security_Yes": "online_security", "online_backup_Yes": "online_backup", "device_protection_Yes": "device_protection", "tech_support_Yes": "tech_support", "streaming_tv_Yes": "streaming_tv", "streaming_movies_Yes": "steaming_movies" }
         df.rename(columns=cols_rename, inplace=True)
 
+        # identify column to stratify for ML
         cols_strat = "churn"
         train, val, test = Prepare.__impute_values(df, cols_strat)
 
+        # if modeling adjust data typs a specific way
         if modeling:
             train, val, test = train.astype(dtype=float),\
                             val.astype(dtype=float),\
                             test.astype(dtype=float)
 
+        # otherwise ajdust another way
         else:
             col_types = {"tenure": int, "monthly_charges": float, "total_charges": float}
             train, val, test = train.astype(dtype=col_types),\
                                 val.astype(dtype=col_types),\
                                 test.astype(dtype=col_types)
-
-
 
         return train, val, test
 
